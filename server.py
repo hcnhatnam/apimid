@@ -2,7 +2,8 @@ import pymysql.cursors
 from flask import Flask
 from flask_restful import Api, Resource
 import datetime
-
+import requests
+import json
 # Connect to the database
 connection = pymysql.connect(host='sql12.freemysqlhosting.net',
                              user='sql12281966',
@@ -32,17 +33,21 @@ def inserDB(value):
     connection.commit()
 
 
+url = 'https://bk15api.herokuapp.com/api'
 
 class ControllerApi(Resource):
 
     def get(self):
-        return {"response": selectDB()}
+        response = requests.get(url)
+        json_data = json.loads(response.text)
+        inserDB(json_data['response'])
+        return {"response": json_data['response']}
 
     def post(self):
         return {"response": "hello post"}
 
     def put(self):
-        inserDB("hello put")
+
         return {"response": "hello put"}
 
     def delete(self):
