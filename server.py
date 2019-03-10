@@ -1,9 +1,10 @@
 import pymysql.cursors
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api, Resource
 import datetime
 import requests
 import json
+
 # Connect to the database
 connection = pymysql.connect(host='sql12.freemysqlhosting.net',
                              user='sql12281966',
@@ -22,11 +23,11 @@ def selectDB():
         return result
 
 
-def inserDB(value):
+def inserDB(value, bbox):
     with connection.cursor() as cursor:
         # Create a new record
-        sql = "INSERT INTO images (value, timedetail) VALUES (%s, %s)"
-        cursor.execute(sql, (value, datetime.datetime.now()))
+        sql = "INSERT INTO images (value, timedetail,meta1) VALUES (%s, %s,%s)"
+        cursor.execute(sql, (value, datetime.datetime.now(), bbox+""))
 
     # connection is not autocommit by default. So you must commit to save
     # your changes.
@@ -34,20 +35,26 @@ def inserDB(value):
 
 
 url = 'https://bk15api.herokuapp.com/api'
+IMAGEKEY = 'image'
+BBOXKEY = "bbox"
+
 
 class ControllerApi(Resource):
 
     def get(self):
         response = requests.get(url)
         json_data = json.loads(response.text)
-        inserDB(json_data['response'])
-        return {"response": json_data['response']}
+        inserDB(json_data[IMAGEKEY], json_data[BBOXKEY])
+        return {IMAGEKEY: json_data[IMAGEKEY], BBOXKEY: json_data[BBOXKEY]}
 
     def post(self):
-        return {"response": "hello post"}
+        imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
+        response = requests.post(url, json={"image": imstring})
+        json_data = json.loads(response.text)
+        inserDB(json_data[IMAGEKEY], json_data[BBOXKEY])
+        return {IMAGEKEY: json_data[IMAGEKEY], BBOXKEY: json_data[BBOXKEY]}
 
     def put(self):
-
         return {"response": "hello put"}
 
     def delete(self):
