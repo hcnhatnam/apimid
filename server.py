@@ -7,9 +7,9 @@ import json
 
 # Connect to the database
 connection = pymysql.connect(host='sql12.freemysqlhosting.net',
-                             user='sql12281966',
-                             password='YmJr8BVWv7',
-                             db='sql12281966',
+                             user='sql12283501',
+                             password='lkBvilxqLG',
+                             db='sql12283501',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
