@@ -1,10 +1,9 @@
 import pymysql.cursors
 from flask import Flask, request
 from flask_restful import Api, Resource
-import datetime
+
 import requests
 import json
-
 
 from datetime import date, datetime
 
@@ -36,7 +35,7 @@ def inserDB(value, bbox,token):
     with connection.cursor() as cursor:
         # Create a new record
         sql = "INSERT INTO images (value, timedetail,meta1,token) VALUES (%s, %s,%s,%s)"
-        cursor.execute(sql, (value, datetime.datetime.now(), bbox+"",token))
+        cursor.execute(sql, (value, datetime.utcnow(), bbox+"",token))
 
     # connection is not autocommit by default. So you must commit to save
     # your changes.
@@ -75,7 +74,7 @@ class ControllerApi(Resource):
         elif gettype=="idget":
             id = request.args.get(DATAGETKEY)
             result = selectDBbyId(id)
-        return json.dumps(result, default=json_serial)
+        return json.dumps(result)
 
 
     def post(self):
