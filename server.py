@@ -5,14 +5,11 @@ from flask_restful import Api, Resource
 import requests
 import json
 
-from datetime import date, datetime
+import datetime
 
-def json_serial(obj):
-    """JSON serializer for objects not serializable by default json code"""
-
-    if isinstance(obj, (datetime, date)):
-        return obj.isoformat()
-    raise TypeError ("Type %s not serializable" % type(obj))
+def json_serial(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
 # Connect to the database
 connection = pymysql.connect(host='sql12.freemysqlhosting.net',
                              user='sql12283501',
@@ -35,7 +32,7 @@ def inserDB(value, bbox,token):
     with connection.cursor() as cursor:
         # Create a new record
         sql = "INSERT INTO images (value, timedetail,meta1,token) VALUES (%s, %s,%s,%s)"
-        cursor.execute(sql, (value, datetime.utcnow(), bbox+"",token))
+        cursor.execute(sql, (value, datetime.datetime.now(), bbox+"",token))
 
     # connection is not autocommit by default. So you must commit to save
     # your changes.
