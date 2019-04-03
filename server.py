@@ -71,7 +71,7 @@ class ControllerApi(Resource):
         elif gettype=="idget":
             id = request.args.get(DATAGETKEY)
             result = selectDBbyId(id)
-        return json.dumps(result,default=json_serial)
+        return json.loads(json.dumps(result,default=json_serial))
 
 
     def post(self):
