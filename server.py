@@ -27,6 +27,12 @@ def selectDB():
         result = cursor.fetchall()
         return result
 
+def UpadteMeta2DB(idimage,token,meta2):
+    with connection.cursor() as cursor:
+        # Create a new record
+        sql = "UPDATE images SET meta2=%s WHERE id=%s AND token=%s"
+        cursor.execute(sql, (meta2, idimage, token))
+    connection.commit()
 
 def inserDB(value, bbox,token):
     with connection.cursor() as cursor:
@@ -59,7 +65,10 @@ TOKENKEY = 'token'
 BBOXKEY = "bbox"
 GETTYPEKEY="gettype"
 DATAGETKEY="data"
-
+PUTTYPEKEY="puttype"
+IDIMAGEKEY = 'idimage'
+IDSKEY="ids"
+META2KEY="meta2"
 class ControllerApi(Resource):
 
     def get(self):
@@ -83,10 +92,21 @@ class ControllerApi(Resource):
         return {IMAGEKEY: json_data[IMAGEKEY], BBOXKEY: json_data[BBOXKEY]}
 
     def put(self):
-        return {"response": "hello put"}
+        try:
+            puttype = json.loads(request.data.decode('utf8'))[PUTTYPEKEY]
+            if puttype=="content":
+                token = json.loads(request.data.decode('utf8'))[TOKENKEY]
+                idimage = json.loads(request.data.decode('utf8'))[IDIMAGEKEY]
+                meta2 = json.loads(request.data.decode('utf8'))[META2KEY]
+                UpadteMeta2DB(idimage, token, meta2)
+            return {"response": "success"}
+        except:
+            return {"response": "error"}
 
     def delete(self):
-        return {"response": "hello delete"}
+
+
+        return {"response": "deleted"}
 
 
 app = Flask(__name__)
