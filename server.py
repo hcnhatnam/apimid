@@ -101,6 +101,7 @@ class ControllerApi(Resource):
                 token = json.loads(request.data.decode('utf8'))[TOKENKEY]
                 idimage = json.loads(request.data.decode('utf8'))[IDIMAGEKEY]
                 meta2 = json.loads(request.data.decode('utf8'))[META2KEY]
+                print("put",token,idimage,meta2)
                 numRow=UpadteMeta2DB(idimage, token, meta2)
             return {"response": numRow}
         except:
