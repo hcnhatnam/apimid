@@ -95,19 +95,19 @@ class ControllerApi(Resource):
 
     def put(self):
         numRow=0
-        try:
-            puttype = json.loads(request.data.decode('utf8'))[PUTTYPEKEY]
-            print("puttype", puttype)
+        # try:
+        puttype = json.loads(request.data.decode('utf8'))[PUTTYPEKEY]
+        print("puttype", puttype)
 
-            if puttype=="content":
-                token = json.loads(request.data.decode('utf8'))[TOKENKEY]
-                idimage = json.loads(request.data.decode('utf8'))[IDIMAGEKEY]
-                meta2 = json.loads(request.data.decode('utf8'))[META2KEY]
-                print("put",token,idimage,meta2)
-                numRow=UpadteMeta2DB(idimage, token, meta2)
-            return {"response": numRow}
-        except:
-            return {"response": numRow}
+        if puttype=="content":
+            token = json.loads(request.data.decode('utf8'))[TOKENKEY]
+            idimage = json.loads(request.data.decode('utf8'))[IDIMAGEKEY]
+            meta2 = json.loads(request.data.decode('utf8'))[META2KEY]
+            print("put",token,idimage,meta2)
+            numRow=UpadteMeta2DB(idimage, token, meta2)
+        return {"response": numRow}
+        # except:
+        #     return {"response": numRow}
 
     def delete(self):
         return {"response": "deleted"}
