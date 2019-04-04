@@ -98,7 +98,6 @@ class ControllerApi(Resource):
         # try:
         puttype = json.loads(request.data.decode('utf8'))[PUTTYPEKEY]
         print("puttype", puttype)
-
         if puttype=="content":
             token = json.loads(request.data.decode('utf8'))[TOKENKEY]
             idimage = json.loads(request.data.decode('utf8'))[IDIMAGEKEY]
@@ -110,6 +109,7 @@ class ControllerApi(Resource):
         #     return {"response": numRow}
 
     def delete(self):
+
         return {"response": "deleted"}
 
 
