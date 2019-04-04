@@ -97,6 +97,8 @@ class ControllerApi(Resource):
         numRow=0
         try:
             puttype = json.loads(request.data.decode('utf8'))[PUTTYPEKEY]
+            print("puttype", puttype)
+
             if puttype=="content":
                 token = json.loads(request.data.decode('utf8'))[TOKENKEY]
                 idimage = json.loads(request.data.decode('utf8'))[IDIMAGEKEY]
