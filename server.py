@@ -11,10 +11,10 @@ def json_serial(o):
     if isinstance(o, datetime.datetime):
         return o.__str__()
 # Connect to the database
-connection = pymysql.connect(host='sql12.freemysqlhosting.net',
-                             user='sql12283501',
-                             password='lkBvilxqLG',
-                             db='sql12283501',
+connection = pymysql.connect(host='remotemysql.com',
+                             user='XHZdtFd4OD',
+                             password='ypteREFJJ9',
+                             db='XHZdtFd4OD',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
