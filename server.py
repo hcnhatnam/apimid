@@ -35,6 +35,19 @@ def UpadteMeta2DB(idimage,token,meta2):
         numRow=cursor.execute(sql, (meta2, idimage, token))
     connection.commit()
     return numRow
+def deleteImgsDB(idsimg,token):
+    numRow=0
+    print(idsimg)
+    with connection.cursor() as cursor:
+        format_strings = ','.join(['%s'] * len(idsimg))
+        print(format_strings)
+        numRow=cursor.execute("DELETE FROM images WHERE id IN (%s)" % format_strings,
+                       tuple(idsimg))
+        # sql = "DELETE FROM images WHERE id IN (%s)"
+        # numRow=cursor.execute(sql,'["2","3"]')
+        # print(cursor.arraysize)
+    connection.commit()
+    return numRow
 
 def inserDB(value, bbox,token):
     with connection.cursor() as cursor:
@@ -68,6 +81,7 @@ BBOXKEY = "bbox"
 GETTYPEKEY="gettype"
 DATAGETKEY="data"
 PUTTYPEKEY="puttype"
+DELETETYPEKEY="deletetype"
 IDIMAGEKEY = 'idimage'
 IDSKEY="ids"
 META2KEY="meta2"
@@ -109,8 +123,15 @@ class ControllerApi(Resource):
         #     return {"response": numRow}
 
     def delete(self):
-
-        return {"response": "deleted"}
+        numRow = 0
+        deletetype = json.loads(request.data.decode('utf8'))[DELETETYPEKEY]
+        print("deletetype", deletetype)
+        if deletetype == "deleteimg":
+            token = json.loads(request.data.decode('utf8'))[TOKENKEY]
+            idimage = json.loads(request.data.decode('utf8'))[IDIMAGEKEY]
+            print("delete", token, idimage)
+            numRow = deleteImgsDB(idimage, token)
+        return {"response": numRow}
 
 
 app = Flask(__name__)
