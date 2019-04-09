@@ -4,7 +4,7 @@ from flask_restful import Api, Resource
 
 import requests
 import json
-
+import uuid
 import datetime
 
 def json_serial(o):
@@ -37,10 +37,8 @@ def UpadteMeta2DB(idimage,token,meta2):
     return numRow
 def deleteImgsDB(idsimg,token):
     numRow=0
-    print(idsimg)
     with connection.cursor() as cursor:
         format_strings = ','.join(['%s'] * len(idsimg))
-        print(format_strings)
         numRow=cursor.execute("DELETE FROM images WHERE id IN (%s)" % format_strings,
                        tuple(idsimg))
         # sql = "DELETE FROM images WHERE id IN (%s)"
@@ -50,14 +48,17 @@ def deleteImgsDB(idsimg,token):
     return numRow
 
 def inserDB(value, bbox,token):
+
     with connection.cursor() as cursor:
         # Create a new record
-        sql = "INSERT INTO images (value, timedetail,meta1,token) VALUES (%s, %s,%s,%s)"
-        cursor.execute(sql, (value, datetime.datetime.now(), bbox+"",token))
+        sql = "INSERT INTO images (id,value, timedetail,meta1,token) VALUES (%s,%s, %s,%s,%s)"
+        id=str(uuid.uuid4())
+        cursor.execute(sql, (id,value, datetime.datetime.now(), bbox+"",token))
 
     # connection is not autocommit by default. So you must commit to save
     # your changes.
     connection.commit()
+    return id
 def selectDBbyToken(token):
     with connection.cursor() as cursor:
         # Read a single record
@@ -104,8 +105,8 @@ class ControllerApi(Resource):
         imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
         response = requests.post(url, json={"image": imstring})
         json_data = json.loads(response.text)
-        inserDB(json_data[IMAGEKEY], json_data[BBOXKEY],token)
-        return {IMAGEKEY: json_data[IMAGEKEY], BBOXKEY: json_data[BBOXKEY]}
+        id=inserDB(json_data[IMAGEKEY], json_data[BBOXKEY],token)
+        return {IDSKEY:id,IMAGEKEY: json_data[IMAGEKEY], BBOXKEY: json_data[BBOXKEY]}
 
     def put(self):
         numRow=0
