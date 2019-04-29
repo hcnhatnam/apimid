@@ -6,15 +6,14 @@ import requests
 import json
 import uuid
 import datetime
-
 def json_serial(o):
     if isinstance(o, datetime.datetime):
         return o.__str__()
 # Connect to the database
 connection = pymysql.connect(host='remotemysql.com',
-                             user='XHZdtFd4OD',
-                             password='ypteREFJJ9',
-                             db='XHZdtFd4OD',
+                             user='e5mDe0T6Sv',
+                             password='2f7FLOShl7',
+                             db='e5mDe0T6Sv',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
@@ -75,7 +74,8 @@ def selectDBbyId(id):
         result = cursor.fetchall()
         return result
 
-url = 'https://bk15api.herokuapp.com/api'
+#url = 'https://bk15api.herokuapp.com/api'
+url=https://bk15app.herokuapp.com/p4/nam/api/
 IMAGEKEY = 'image'
 TOKENKEY = 'token'
 BBOXKEY = "bbox"
