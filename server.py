@@ -74,8 +74,8 @@ def selectDBbyId(id):
         result = cursor.fetchall()
         return result
 
-#url = 'https://bk15api.herokuapp.com/api'
-url=" https://bk15app.herokuapp.com/p4/nam/api/"
+url = 'https://bk15api.herokuapp.com/api'
+# url=" https://bk15app.herokuapp.com/p4/nam/api/"
 IMAGEKEY = 'image'
 TOKENKEY = 'token'
 BBOXKEY = "bbox"
@@ -143,5 +143,5 @@ if __name__ == '__main__':
     if os.environ.get('APP_LOCATION') == 'heroku':
         app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
     else:
-        app.run(host='localhost', port=5010, debug=True)
+        app.run(host='localhost', port=6010, debug=True)
 
