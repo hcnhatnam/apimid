@@ -75,7 +75,7 @@ def selectDBbyId(id):
         return result
 
 #url = 'https://bk15api.herokuapp.com/api'
-url=https://bk15app.herokuapp.com/p4/nam/api/
+url="https://bk15app.herokuapp.com/p4/nam/api/"
 IMAGEKEY = 'image'
 TOKENKEY = 'token'
 BBOXKEY = "bbox"
