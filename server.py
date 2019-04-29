@@ -75,7 +75,7 @@ def selectDBbyId(id):
         return result
 
 #url = 'https://bk15api.herokuapp.com/api'
-url="https://bk15app.herokuapp.com/p4/nam/api/"
+url=" https://bk15app.herokuapp.com/p4/nam/api/"
 IMAGEKEY = 'image'
 TOKENKEY = 'token'
 BBOXKEY = "bbox"
@@ -137,7 +137,11 @@ class ControllerApi(Resource):
 
 app = Flask(__name__)
 api = Api(app)
-api.add_resource(ControllerApi, '/api')
-
+api.add_resource(ControllerApi, '/p4/nam2/api/')
+import os
 if __name__ == '__main__':
-    app.run(debug=True)
+    if os.environ.get('APP_LOCATION') == 'heroku':
+        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    else:
+        app.run(host='localhost', port=5010, debug=True)
+
