@@ -129,7 +129,11 @@ class ControllerApi(Resource):
         pathImage=os.path.join(STATICIMAGEPATH,id+".png")
         im.save(pathImage)
         urlImage=request.url_root+pathImage
+
+        print("urlImage",urlImage)
+
         response = requests.post(url, json={"urlimage": urlImage})
+        print("response",response)
         json_data = json.loads(response.text)
         id=inserDB(id,urlImage, json_data[BBOXKEY],token)
         return {IDSKEY:id,IMAGEKEY: urlImage, BBOXKEY: json_data[BBOXKEY]}
