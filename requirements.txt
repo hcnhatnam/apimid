@@ -3,5 +3,5 @@ Flask
 Flask-RESTful
 PyMySQL
 requests
-
+Pillow
 

@@ -1,11 +1,15 @@
 import pymysql.cursors
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_restful import Api, Resource
-
+from PIL import Image
 import requests
 import json
 import uuid
 import datetime
+from io import BytesIO
+import base64
+import os
+
 def json_serial(o):
     if isinstance(o, datetime.datetime):
         return o.__str__()
@@ -46,12 +50,11 @@ def deleteImgsDB(idsimg,token):
     connection.commit()
     return numRow
 
-def inserDB(value, bbox,token):
+def inserDB(id,value, bbox,token):
 
     with connection.cursor() as cursor:
         # Create a new record
         sql = "INSERT INTO images (id,value, timedetail,meta1,token) VALUES (%s,%s, %s,%s,%s)"
-        id=str(uuid.uuid4())
         cursor.execute(sql, (id,value, datetime.datetime.now(), bbox+"",token))
 
     # connection is not autocommit by default. So you must commit to save
@@ -75,7 +78,12 @@ def selectDBbyId(id):
         return result
 
 urlschool = 'https://bk15api.herokuapp.com/api'
-urlheroku=" https://bk15app.herokuapp.com/p4/nam/api/"
+# urlheroku=" https://bk15app.herokuapp.com/p4/nam/api/"
+urlheroku="http://127.0.0.1:5010/p4/nam/api/"
+
+HOST="0.0.0.0"
+PORT="5000"
+
 IMAGEKEY = 'image'
 TOKENKEY = 'token'
 BBOXKEY = "bbox"
@@ -87,6 +95,8 @@ IDIMAGEKEY = 'idimage'
 IDSKEY="ids"
 META2KEY="meta2"
 SERVERTYPE="servertype"
+
+STATICIMAGEPATH=os.path.join("static","images")
 def chooseServer(requestStr):
     if requestStr!=None:
         if requestStr=="school":
@@ -113,10 +123,16 @@ class ControllerApi(Resource):
         token = decode.get(TOKENKEY)
         # imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
         imstring=decode.get(IMAGEKEY)
-        response = requests.post(url, json={"image": imstring})
+        id=str(uuid.uuid4()).replace("-","")
+
+        im=Image.open(BytesIO(base64.b64decode(imstring)))
+        pathImage=os.path.join(STATICIMAGEPATH,id+".png")
+        im.save(pathImage)
+        urlImage=request.url_root+pathImage
+        response = requests.post(url, json={"urlimage": urlImage})
         json_data = json.loads(response.text)
-        id=inserDB(json_data[IMAGEKEY], json_data[BBOXKEY],token)
-        return {IDSKEY:id,IMAGEKEY: json_data[IMAGEKEY], BBOXKEY: json_data[BBOXKEY]}
+        id=inserDB(id,urlImage, json_data[BBOXKEY],token)
+        return {IDSKEY:id,IMAGEKEY: urlImage, BBOXKEY: json_data[BBOXKEY]}
 
     def put(self):
         numRow=0
@@ -146,14 +162,22 @@ class ControllerApi(Resource):
         return {"response": numRow}
 
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static')
 api = Api(app)
 api.add_resource(ControllerApi, '/p4/nam2/api/')
-import os
+
+
+# retrieve file from 'static/images' directory
+@app.route('/static/images/<filename>')
+def send_image(filename):
+    return send_from_directory("static/images", filename)
 if __name__ == '__main__':
     if os.environ.get('APP_LOCATION') == 'heroku':
-        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+        HOST = "0.0.0.0"
+        app.run(host=HOST, port=int(os.environ.get("PORT", PORT)))
     else:
-        app.run(host='127.0.0.1', port=6010, debug=True)
+        HOST = '127.0.0.1'
+        PORT = 6010
+        app.run(host=HOST, port=PORT, debug=True)
 
 
