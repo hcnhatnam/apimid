@@ -78,8 +78,8 @@ def selectDBbyId(id):
         return result
 
 urlschool = 'https://bk15api.herokuapp.com/api'
-# urlheroku=" https://bk15app.herokuapp.com/p4/nam/api/"
-urlheroku="http://127.0.0.1:5010/p4/nam/api/"
+urlheroku=" https://bk15app.herokuapp.com/p4/nam/api/"
+# urlheroku="http://127.0.0.1:5010/p4/nam/api/"
 
 HOST="0.0.0.0"
 PORT="5000"
