@@ -174,6 +174,7 @@ def send_image(filename):
 if __name__ == '__main__':
     if os.environ.get('APP_LOCATION') == 'heroku':
         HOST = "0.0.0.0"
+        PORT = "5000"
         app.run(host=HOST, port=int(os.environ.get("PORT", PORT)))
     else:
         HOST = '127.0.0.1'
