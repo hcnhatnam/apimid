@@ -142,6 +142,7 @@ class ControllerApi(Resource):
             idimage = json.loads(request.data.decode('utf8'))[IDIMAGEKEY]
             print("delete", token, idimage)
             numRow = deleteImgsDB(idimage, token)
+            print("numRow",numRow)
         return {"response": numRow}
 
 
