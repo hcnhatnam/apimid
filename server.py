@@ -74,8 +74,8 @@ def selectDBbyId(id):
         result = cursor.fetchall()
         return result
 
-url = 'https://bk15api.herokuapp.com/api'
-# url=" https://bk15app.herokuapp.com/p4/nam/api/"
+urlschool = 'https://bk15api.herokuapp.com/api'
+urlheroku=" https://bk15app.herokuapp.com/p4/nam/api/"
 IMAGEKEY = 'image'
 TOKENKEY = 'token'
 BBOXKEY = "bbox"
@@ -86,6 +86,12 @@ DELETETYPEKEY="deletetype"
 IDIMAGEKEY = 'idimage'
 IDSKEY="ids"
 META2KEY="meta2"
+SERVERTYPE="servertype"
+def chooseServer(requestStr):
+    if requestStr!=None:
+        if requestStr=="school":
+            return urlschool
+    return urlheroku
 class ControllerApi(Resource):
 
     def get(self):
@@ -101,8 +107,12 @@ class ControllerApi(Resource):
 
 
     def post(self):
-        token = json.loads(request.data.decode('utf8'))[TOKENKEY]
-        imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
+        decode=json.loads(request.data.decode('utf8'))
+
+        url=chooseServer(decode.get(SERVERTYPE))
+        token = decode.get(TOKENKEY)
+        # imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
+        imstring=decode.get(IMAGEKEY)
         response = requests.post(url, json={"image": imstring})
         json_data = json.loads(response.text)
         id=inserDB(json_data[IMAGEKEY], json_data[BBOXKEY],token)
@@ -144,4 +154,5 @@ if __name__ == '__main__':
         app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
     else:
         app.run(host='127.0.0.1', port=6010, debug=True)
+
 
