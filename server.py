@@ -77,7 +77,7 @@ def selectDBbyId(id):
         result = cursor.fetchall()
         return result
 
-urlschool = 'https://bk15api.herokuapp.com/api'
+urlschool = 'https://221.133.13.124:10001/p4/nam/api/'
 urlheroku=" https://bk15app.herokuapp.com/p4/nam/api/"
 # urlheroku="http://127.0.0.1:5010/p4/nam/api/"
 
