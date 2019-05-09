@@ -177,7 +177,7 @@ class ControllerApi(Resource):
 
         print("urlImage",urlImage)
 
-        response = requests.post(url, json={"urlimage": urlImage}, verify=False)
+        response = requests.post(url, json={"urlimage": "https://apimid.herokuapp.com/static/images/96801e3448c0443f8fa226ad6b80400e.png"}, verify=False)
         print("response",response.text)
         json_data = json.loads(response.text)
         id=inserDB(id,urlImage, json_data[BBOXKEY],token)

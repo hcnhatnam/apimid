@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="99649ce7-cc26-47ef-8b1e-378c418f0b18" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="181" column="45" lean-forward="true" selection-start-line="181" selection-start-column="45" selection-end-line="181" selection-end-column="45" />
+            <state relative-caret-position="204">
+              <caret line="179" column="136" selection-start-line="179" selection-start-column="136" selection-end-line="179" selection-end-column="136" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -341,8 +339,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="181" column="45" lean-forward="true" selection-start-line="181" selection-start-column="45" selection-end-line="181" selection-end-column="45" />
+        <state relative-caret-position="204">
+          <caret line="179" column="136" selection-start-line="179" selection-start-column="136" selection-end-line="179" selection-end-column="136" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
