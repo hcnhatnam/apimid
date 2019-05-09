@@ -22,6 +22,7 @@ def connection():
                                  db='e5mDe0T6Sv',
                                  charset='utf8mb4',
                                  cursorclass=pymysql.cursors.DictCursor)
+
     c = connection.cursor()
     return c, connection
 
@@ -44,7 +45,7 @@ def UpadteMeta2DB(idimage,token,meta2):
         # Create a new record
         sql = "UPDATE images SET meta2=%s WHERE id=%s AND token=%s"
         numRow = cursor.execute(sql, (meta2, idimage, token))
-        connection.commit()
+        conn.commit()
         return numRow
     except Exception as e:
         return (str(e))
@@ -61,7 +62,7 @@ def deleteImgsDB(idsimg,token):
         # sql = "DELETE FROM images WHERE id IN (%s)"
         # numRow=cursor.execute(sql,'["2","3"]')
         # print(cursor.arraysize)
-        connection.commit()
+        conn.commit()
         return numRow
     except Exception as e:
         return (str(e))
@@ -81,7 +82,7 @@ def inserDB(id,value, bbox,token):
 
         # connection is not autocommit by default. So you must commit to save
         # your changes.
-        connection.commit()
+        conn.commit()
         return id
     except Exception as e:
         return (str(e))
@@ -176,7 +177,7 @@ class ControllerApi(Resource):
 
         print("urlImage",urlImage)
 
-        response = requests.post(url, json={"urlimage": urlImage}, verify=False)
+        response = requests.post(url, json={"urlimage": "https://apimid.herokuapp.com/static/images/0d454b91afca4364842f002f2072a7de.png"}, verify=False)
         print("response",response)
         json_data = json.loads(response.text)
         id=inserDB(id,urlImage, json_data[BBOXKEY],token)
