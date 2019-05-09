@@ -100,7 +100,7 @@ STATICIMAGEPATH=os.path.join("static","images")
 def chooseServer(requestStr):
     if requestStr!=None:
         if requestStr=="school":
-            print("using school server")
+            print("===================school")
             return urlschool
     return urlheroku
 class ControllerApi(Resource):
@@ -122,8 +122,8 @@ class ControllerApi(Resource):
 
         url=chooseServer(decode.get(SERVERTYPE))
         token = decode.get(TOKENKEY)
-        # imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
-        imstring=decode.get(IMAGEKEY)
+        imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
+        #imstring=decode.get(IMAGEKEY)
         id=str(uuid.uuid4()).replace("-","")
 
         im=Image.open(BytesIO(base64.b64decode(imstring)))
@@ -133,8 +133,7 @@ class ControllerApi(Resource):
 
         print("urlImage",urlImage)
 
-        # response = requests.post(url, json={"urlimage": urlImage},verify=False)
-        response=requests.get(url,verify=False)
+        response = requests.post(url, json={"urlimage": urlImage})
         print("response",response)
         json_data = json.loads(response.text)
         id=inserDB(id,urlImage, json_data[BBOXKEY],token)
