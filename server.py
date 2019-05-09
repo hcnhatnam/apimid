@@ -13,69 +13,112 @@ import os
 def json_serial(o):
     if isinstance(o, datetime.datetime):
         return o.__str__()
-# Connect to the database
-connection = pymysql.connect(host='remotemysql.com',
-                             user='e5mDe0T6Sv',
-                             password='2f7FLOShl7',
-                             db='e5mDe0T6Sv',
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor)
+
+def connection():
+    # Connect to the database
+    connection = pymysql.connect(host='remotemysql.com',
+                                 user='e5mDe0T6Sv',
+                                 password='2f7FLOShl7',
+                                 db='e5mDe0T6Sv',
+                                 charset='utf8mb4',
+                                 cursorclass=pymysql.cursors.DictCursor)
+    c = connection.cursor()
+    return c, connection
 
 
 def selectDB():
-    with connection.cursor() as cursor:
+    try:
+        cursor, conn = connection()
         # Read a single record
         sql = "SELECT id FROM images"
         cursor.execute(sql)
         result = cursor.fetchall()
         return result
+    except Exception as e:
+        return (str(e))
 
 def UpadteMeta2DB(idimage,token,meta2):
-    numRow=0
-    with connection.cursor() as cursor:
+    try:
+        cursor, conn = connection()
+        numRow = 0
         # Create a new record
         sql = "UPDATE images SET meta2=%s WHERE id=%s AND token=%s"
-        numRow=cursor.execute(sql, (meta2, idimage, token))
-    connection.commit()
-    return numRow
+        numRow = cursor.execute(sql, (meta2, idimage, token))
+        connection.commit()
+        return numRow
+    except Exception as e:
+        return (str(e))
+
+
+
 def deleteImgsDB(idsimg,token):
-    numRow=0
-    with connection.cursor() as cursor:
+    try:
+        cursor, conn = connection()
+        numRow = 0
         format_strings = ','.join(['%s'] * len(idsimg))
-        numRow=cursor.execute("DELETE FROM images WHERE id IN (%s)" % format_strings,
-                       tuple(idsimg))
+        numRow = cursor.execute("DELETE FROM images WHERE id IN (%s)" % format_strings,
+                                tuple(idsimg))
         # sql = "DELETE FROM images WHERE id IN (%s)"
         # numRow=cursor.execute(sql,'["2","3"]')
         # print(cursor.arraysize)
-    connection.commit()
-    return numRow
+        connection.commit()
+        return numRow
+    except Exception as e:
+        return (str(e))
+
+
+
+
+
+
 
 def inserDB(id,value, bbox,token):
-
-    with connection.cursor() as cursor:
+    try:
+        cursor, conn = connection()
         # Create a new record
         sql = "INSERT INTO images (id,value, timedetail,meta1,token) VALUES (%s,%s, %s,%s,%s)"
-        cursor.execute(sql, (id,value, datetime.datetime.now(), bbox+"",token))
+        cursor.execute(sql, (id, value, datetime.datetime.now(), bbox + "", token))
 
-    # connection is not autocommit by default. So you must commit to save
-    # your changes.
-    connection.commit()
-    return id
+        # connection is not autocommit by default. So you must commit to save
+        # your changes.
+        connection.commit()
+        return id
+    except Exception as e:
+        return (str(e))
+
+
+
+
+
 def selectDBbyToken(token):
-    with connection.cursor() as cursor:
+    try:
+        cursor, conn = connection()
         # Read a single record
         sql = "SELECT * FROM images WHERE token=%s"
-        cursor.execute(sql,(token))
+        cursor.execute(sql, (token))
         result = cursor.fetchall()
         return result
+    except Exception as e:
+        return (str(e))
+
+
+
+
 
 def selectDBbyId(id):
-    with connection.cursor() as cursor:
+    try:
+        cursor, conn = connection()
         # Read a single record
         sql = "SELECT * FROM images WHERE id=%s"
-        cursor.execute(sql,(id))
+        cursor.execute(sql, (id))
         result = cursor.fetchall()
         return result
+    except Exception as e:
+        return (str(e))
+
+
+
+
 
 urlschool = 'https://221.133.13.124:10001/p4/nam/api/'
 urlheroku=" https://bk15app.herokuapp.com/p4/nam/api/"
