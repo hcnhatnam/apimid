@@ -122,8 +122,8 @@ class ControllerApi(Resource):
 
         url=chooseServer(decode.get(SERVERTYPE))
         token = decode.get(TOKENKEY)
-        imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
-        #imstring=decode.get(IMAGEKEY)
+        #imstring = json.loads(request.data.decode('utf8').replace("'", '"'))[IMAGEKEY]
+        imstring=decode.get(IMAGEKEY)
         id=str(uuid.uuid4()).replace("-","")
 
         im=Image.open(BytesIO(base64.b64decode(imstring)))
