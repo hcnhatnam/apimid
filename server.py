@@ -176,8 +176,8 @@ class ControllerApi(Resource):
         urlImage=request.url_root+pathImage
 
         print("urlImage",urlImage)
-
-        response = requests.post(url, json={"urlimage": "https://iamabhik.files.wordpress.com/2011/04/32_thumb1.jpg?w=361&h=205"}, verify=False)
+	#"https://iamabhik.files.wordpress.com/2011/04/32_thumb1.jpg?w=361&h=205"
+        response = requests.post(url, json={"urlimage": urlImage}, verify=False)
 
         json_data = json.loads(response.text)
         print("response", json_data)
