@@ -28,44 +28,41 @@ def connection():
 
 
 def selectDB():
-    try:
-        cursor, conn = connection()
-        # Read a single record
-        sql = "SELECT id FROM images"
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        return result
-    except Exception as e:
-        return (str(e))
+
+    cursor, conn = connection()
+    # Read a single record
+    sql = "SELECT id FROM images"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
+
 
 def UpadteMeta2DB(idimage,token,meta2):
-    try:
-        cursor, conn = connection()
-        numRow = 0
-        # Create a new record
-        sql = "UPDATE images SET meta2=%s WHERE id=%s AND token=%s"
-        numRow = cursor.execute(sql, (meta2, idimage, token))
-        conn.commit()
-        return numRow
-    except Exception as e:
-        return (str(e))
+
+    cursor, conn = connection()
+    numRow = 0
+    # Create a new record
+    sql = "UPDATE images SET meta2=%s WHERE id=%s AND token=%s"
+    numRow = cursor.execute(sql, (meta2, idimage, token))
+    conn.commit()
+    return numRow
+
 
 
 
 def deleteImgsDB(idsimg,token):
-    try:
-        cursor, conn = connection()
-        numRow = 0
-        format_strings = ','.join(['%s'] * len(idsimg))
-        numRow = cursor.execute("DELETE FROM images WHERE id IN (%s)" % format_strings,
-                                tuple(idsimg))
-        # sql = "DELETE FROM images WHERE id IN (%s)"
-        # numRow=cursor.execute(sql,'["2","3"]')
-        # print(cursor.arraysize)
-        conn.commit()
-        return numRow
-    except Exception as e:
-        return (str(e))
+
+    cursor, conn = connection()
+    numRow = 0
+    format_strings = ','.join(['%s'] * len(idsimg))
+    numRow = cursor.execute("DELETE FROM images WHERE id IN (%s)" % format_strings,
+                            tuple(idsimg))
+    # sql = "DELETE FROM images WHERE id IN (%s)"
+    # numRow=cursor.execute(sql,'["2","3"]')
+    # print(cursor.arraysize)
+    conn.commit()
+    return numRow
+
 
 
 
@@ -74,48 +71,44 @@ def deleteImgsDB(idsimg,token):
 
 
 def inserDB(id,value, bbox,token):
-    try:
-        cursor, conn = connection()
-        # Create a new record
-        sql = "INSERT INTO images (id,value, timedetail,meta1,token) VALUES (%s,%s, %s,%s,%s)"
-        cursor.execute(sql, (id, value, datetime.datetime.now(), bbox + "", token))
 
-        # connection is not autocommit by default. So you must commit to save
-        # your changes.
-        conn.commit()
-        return id
-    except Exception as e:
-        return (str(e))
+    cursor, conn = connection()
+    # Create a new record
+    sql = "INSERT INTO images (id,value, timedetail,meta1,token) VALUES (%s,%s, %s,%s,%s)"
+    cursor.execute(sql, (id, value, datetime.datetime.now(), bbox + "", token))
+
+    # connection is not autocommit by default. So you must commit to save
+    # your changes.
+    conn.commit()
+    return id
+
 
 
 
 
 
 def selectDBbyToken(token):
-    try:
-        cursor, conn = connection()
-        # Read a single record
-        sql = "SELECT * FROM images WHERE token=%s"
-        cursor.execute(sql, (token))
-        result = cursor.fetchall()
-        return result
-    except Exception as e:
-        return (str(e))
+
+    cursor, conn = connection()
+    # Read a single record
+    sql = "SELECT * FROM images WHERE token=%s"
+    cursor.execute(sql, (token))
+    result = cursor.fetchall()
+    return result
 
 
 
 
 
 def selectDBbyId(id):
-    try:
-        cursor, conn = connection()
-        # Read a single record
-        sql = "SELECT * FROM images WHERE id=%s"
-        cursor.execute(sql, (id))
-        result = cursor.fetchall()
-        return result
-    except Exception as e:
-        return (str(e))
+
+    cursor, conn = connection()
+    # Read a single record
+    sql = "SELECT * FROM images WHERE id=%s"
+    cursor.execute(sql, (id))
+    result = cursor.fetchall()
+    return result
+
 
 
 
