@@ -173,7 +173,7 @@ class ControllerApi(Resource):
         response = requests.post(url, json={"urlimage": urlImage}, verify=False)
 
         json_data = json.loads(response.text)
-        print("response", json_data)
+        print("id",id,"urlImage",urlImage,"json_data[BBOXKEY]",json_data[BBOXKEY])
         id=inserDB(id,urlImage, json_data[BBOXKEY],token)
         return {IDSKEY:id,IMAGEKEY: urlImage, BBOXKEY: json_data[BBOXKEY]}
 
