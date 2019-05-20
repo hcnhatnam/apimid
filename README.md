@@ -5,7 +5,7 @@
 
 
 
-![alt text](https://gitlab.com/namhcn/apimid/blob/master/static/images/AppArch.png)
+![alt text](https://github.com/hcnhatnam/apimid/blob/master/venv/AppArch2.png)
 
 ## Triển khai máy chủ cho ứng dụng Android
 Phía máy chủ gồm 3 thành phần chính:
